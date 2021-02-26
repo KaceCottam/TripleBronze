@@ -57,8 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Patches.cs" />
-    <Compile Include="Plugin.cs" />
-    <Compile Include="PluginInfo.cs" />
+    <Compile Include="TripleBronze.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
