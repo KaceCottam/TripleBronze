@@ -11,11 +11,11 @@ namespace TripleBronze
     {
         public void Awake()
         {
-            var enabled      = base.Config.Bind<bool>("TripleBronze", "Enabled", true, "Determines whether or not the mod is enabled.");
-            bronzeMultiplier = base.Config.Bind<uint>("TripleBronze", "BronzeMultiplier", 3U, "The normal recipe result for bronze is multiplied by this value.");
-            debugMessages    = base.Config.Bind<bool>("TripleBronze", "DebugEnabled", false, "Enable debug messages in the console.");
-            craftBarsInForge = base.Config.Bind<bool>("CraftBarsInForge", "Enabled", false, "Allows bypassing the smeltery by create.");
-            coalPerBar       = base.Config.Bind<uint>("CraftBarsInForge", "CoalPerBar", 5U, "Can create bars using this many coal. Ores/Scrap are done in a 1:1 ratio.");
+            var enabled      = base.Config.Bind("TripleBronze", "Enabled", true, "Determines whether or not the mod is enabled.");
+            bronzeMultiplier = base.Config.Bind("TripleBronze", "BronzeMultiplier", 3U, "The normal recipe result for bronze is multiplied by this value.");
+            debugMessages    = base.Config.Bind("TripleBronze", "DebugEnabled", false, "Enable debug messages in the console.");
+            craftBarsInForge = base.Config.Bind("CraftBarsInForge", "Enabled", false, "Allows bypassing the smeltery by create.");
+            coalPerBar       = base.Config.Bind("CraftBarsInForge", "CoalPerBar", 5U, "Can create bars using this many coal. Ores/Scrap are done in a 1:1 ratio.");
 
             if (enabled.Value == true)
             {
