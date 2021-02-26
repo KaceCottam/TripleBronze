@@ -6,3 +6,5 @@ Requires BepinEx.
 
 Includes a patch that adds recipes from ore->ingot to avoid using Smelters and Coal Kilns (because of lag reasons) and save time.
 Enable this in the config file.
+
+Hosted at <https://www.nexusmods.com/valheim/mods/94>
