@@ -1,0 +1,9 @@
+{
+    "name": "TripleBronze",
+    "version_number": "0.2.1",
+    "website_url": "https://github.com/KaceCottam/TripleBronze",
+    "description": "Triples the amount of bronze you get with each craft so that crafting bronze is consistent (1 tin ingot + 2 copper ingots = 3 bronze ingots)",
+    "dependencies": [
+        "denikson-BepInExPack_Valheim-5.4.701"
+    ]
+}
