@@ -59,7 +59,7 @@ namespace TripleBronze
             }
         }
 
-        private static Recipe makeRecipe(Tuple<CraftingStation, int> station,
+        private static Recipe MakeRecipe(Tuple<CraftingStation, int> station,
                                          CraftingStation repairStation,
                                          Tuple<ItemDrop, int> resultItem,
                                          params Tuple<ItemDrop, int>[] ingredients) => new Recipe()
@@ -74,11 +74,18 @@ namespace TripleBronze
         };
 
         private static bool flagQuickSmelt = false; // dumb fix
+        private static bool firstMessageDone = false; // dumb fix
         [HarmonyPostfix]
         [HarmonyPatch(typeof(ObjectDB), "Awake")]
         public static void ObjectDB_Awake_QuickSmeltPatch(ref ObjectDB __instance)
         {
             if (flagQuickSmelt || !TripleBronze.CraftBarsInForgeEnabled) return;
+
+            if (firstMessageDone == false)
+            {
+                firstMessageDone = true;
+                return;
+            }
 
             List<CraftingStation> craftingStations = __instance.m_recipes
                 .Where(r => r != null)
@@ -87,56 +94,88 @@ namespace TripleBronze
                 .Distinct()
                 .ToList();
 
-            ItemDrop woodDrop      = __instance.GetItemPrefab(@"Wood")?.GetComponent<ItemDrop>();
-            ItemDrop coalDrop      = __instance.GetItemPrefab(@"Coal")?.GetComponent<ItemDrop>();
-            ItemDrop copperOreDrop = __instance.GetItemPrefab(@"CopperOre")?.GetComponent<ItemDrop>();
-            ItemDrop copperDrop    = __instance.GetItemPrefab(@"Copper")?.GetComponent<ItemDrop>();
-            ItemDrop tinOreDrop    = __instance.GetItemPrefab(@"TinOre")?.GetComponent<ItemDrop>();
-            ItemDrop tinDrop       = __instance.GetItemPrefab(@"Tin")?.GetComponent<ItemDrop>();
-            ItemDrop ironOreDrop   = __instance.GetItemPrefab(@"IronOre")?.GetComponent<ItemDrop>();
-            ItemDrop ironScrapDrop = __instance.GetItemPrefab(@"IronScrap")?.GetComponent<ItemDrop>();
-            ItemDrop ironDrop      = __instance.GetItemPrefab(@"Iron")?.GetComponent<ItemDrop>();
 
-            if (woodDrop == null)      { logger.LogError($"woodDrop is null!"); return; }
-            if (coalDrop == null)      { logger.LogError($"coalDrop is null!"); return; }
-            if (copperOreDrop == null) { logger.LogError($"copperOreDrop is null!"); return; }
-            if (copperDrop == null)    { logger.LogError($"copperDrop is null!"); return; }
-            if (tinOreDrop == null)    { logger.LogError($"tinOreDrop is null!"); return; }
-            if (tinDrop == null)       { logger.LogError($"tinDrop is null!"); return; }
-            if (ironScrapDrop == null) { logger.LogError($"ironScrapDrop is null!"); return; }
-            if (ironOreDrop == null)   { logger.LogError($"ironOreDrop is null!"); return; }
-            if (ironDrop == null)      { logger.LogError($"ironDrop is null!"); return; }
+            ItemDrop woodDrop            = __instance.GetItemPrefab(@"Wood")?.GetComponent<ItemDrop>();
+            ItemDrop coalDrop            = __instance.GetItemPrefab(@"Coal")?.GetComponent<ItemDrop>();
+            ItemDrop copperOreDrop       = __instance.GetItemPrefab(@"CopperOre")?.GetComponent<ItemDrop>();
+            ItemDrop copperDrop          = __instance.GetItemPrefab(@"Copper")?.GetComponent<ItemDrop>();
+            ItemDrop tinOreDrop          = __instance.GetItemPrefab(@"TinOre")?.GetComponent<ItemDrop>();
+            ItemDrop tinDrop             = __instance.GetItemPrefab(@"Tin")?.GetComponent<ItemDrop>();
+            ItemDrop ironOreDrop         = __instance.GetItemPrefab(@"IronOre")?.GetComponent<ItemDrop>();
+            ItemDrop ironScrapDrop       = __instance.GetItemPrefab(@"IronScrap")?.GetComponent<ItemDrop>();
+            ItemDrop ironDrop            = __instance.GetItemPrefab(@"Iron")?.GetComponent<ItemDrop>();
+            ItemDrop silverOreDrop       = __instance.GetItemPrefab(@"SilverOre")?.GetComponent<ItemDrop>();
+            ItemDrop silverDrop          = __instance.GetItemPrefab(@"Silver")?.GetComponent<ItemDrop>();
+            ItemDrop blackMetalScrapDrop = __instance.GetItemPrefab(@"BlackMetalScrap")?.GetComponent<ItemDrop>();
+            ItemDrop blackMetalDrop      = __instance.GetItemPrefab(@"BlackMetal")?.GetComponent<ItemDrop>();
+            ItemDrop flametalOreDrop     = __instance.GetItemPrefab(@"FlametalOre")?.GetComponent<ItemDrop>();
+            ItemDrop flametalDrop        = __instance.GetItemPrefab(@"Flametal")?.GetComponent<ItemDrop>();
+
+
+            if (woodDrop == null)            { logger.LogError($"woodDrop is null!"); return; }
+            if (coalDrop == null)            { logger.LogError($"coalDrop is null!"); return; }
+            if (copperOreDrop == null)       { logger.LogError($"copperOreDrop is null!"); return; }
+            if (copperDrop == null)          { logger.LogError($"copperDrop is null!"); return; }
+            if (tinOreDrop == null)          { logger.LogError($"tinOreDrop is null!"); return; }
+            if (tinDrop == null)             { logger.LogError($"tinDrop is null!"); return; }
+            if (ironScrapDrop == null)       { logger.LogError($"ironScrapDrop is null!"); return; }
+            if (ironOreDrop == null)         { logger.LogError($"ironOreDrop is null!"); return; }
+            if (ironDrop == null)            { logger.LogError($"ironDrop is null!"); return; }
+            if (silverOreDrop == null)       { logger.LogError($"silverOreDrop is null!"); return; }
+            if (silverDrop == null)          { logger.LogError($"silverDrop is null!"); return; }
+            if (blackMetalScrapDrop == null) { logger.LogError($"blackMetalScrapDrop is null!"); return; }
+            if (blackMetalDrop == null)      { logger.LogError($"blackMetalDrop is null!"); return; }
+            if (flametalOreDrop == null)     { logger.LogError($"flametalOreDrop is null!"); return; }
+            if (flametalDrop == null)        { logger.LogError($"flametalDrop is null!"); return; }
 
             CraftingStation forge = craftingStations.Find(c => c.m_name.Contains(@"forge"));
             CraftingStation workbench = craftingStations.Find(c => c.m_name.Contains(@"workbench"));
 
-            Recipe coalRecipe = makeRecipe(Tuple.Create(workbench, 4),
+            Recipe coalRecipe = MakeRecipe(Tuple.Create(workbench, 2),
                                            null,
                                            Tuple.Create(coalDrop, 1),
                                            Tuple.Create(woodDrop, 1));
 
-            Recipe copperBarRecipe = makeRecipe(Tuple.Create(forge, 2),
+            Recipe copperBarRecipe = MakeRecipe(Tuple.Create(forge, 2),
                                                 null,
                                                 Tuple.Create(copperDrop, 1),
                                                 Tuple.Create(coalDrop, (int)TripleBronze.CoalPerBar),
                                                 Tuple.Create(copperOreDrop, 1));
-            Recipe tinBarRecipe = makeRecipe(Tuple.Create(forge, 3),
+            Recipe tinBarRecipe = MakeRecipe(Tuple.Create(forge, 3),
                                              null,
                                              Tuple.Create(tinDrop, 1),
                                              Tuple.Create(coalDrop, (int)TripleBronze.CoalPerBar),
                                              Tuple.Create(tinOreDrop, 1));
-            Recipe ironBarRecipe1 = makeRecipe(Tuple.Create(forge, 4),
+            Recipe ironBarRecipe1 = MakeRecipe(Tuple.Create(forge, 4),
                                                null,
                                                Tuple.Create(ironDrop, 1),
                                                Tuple.Create(coalDrop, (int)TripleBronze.CoalPerBar),
                                                Tuple.Create(ironScrapDrop, 1));
-            Recipe ironBarRecipe2 = makeRecipe(Tuple.Create(forge, 4),
+            Recipe ironBarRecipe2 = MakeRecipe(Tuple.Create(forge, 4),
                                                null,
                                                Tuple.Create(ironDrop, 1),
                                                Tuple.Create(coalDrop, (int)TripleBronze.CoalPerBar),
                                                Tuple.Create(ironOreDrop, 1));
 
-            Recipe[] recipes = new[] { coalRecipe, copperBarRecipe, tinBarRecipe, ironBarRecipe1, ironBarRecipe2 };
+            Recipe silverBarRecipe = MakeRecipe(Tuple.Create(forge, 4),
+                                                null,
+                                                Tuple.Create(silverDrop, 1),
+                                                Tuple.Create(coalDrop, (int)TripleBronze.CoalPerBar),
+                                                Tuple.Create(silverOreDrop, 1));
+
+            Recipe blackMetalBarRecipe = MakeRecipe(Tuple.Create(forge, 5),
+                                                    null,
+                                                    Tuple.Create(blackMetalDrop, 1),
+                                                    Tuple.Create(coalDrop, (int)TripleBronze.CoalPerBar),
+                                                    Tuple.Create(blackMetalScrapDrop, 1));
+
+            Recipe flametalBarRecipe = MakeRecipe(Tuple.Create(forge, 4),
+                                                  null,
+                                                  Tuple.Create(flametalDrop, 1),
+                                                  Tuple.Create(coalDrop, (int)TripleBronze.CoalPerBar),
+                                                  Tuple.Create(flametalOreDrop, 1));
+
+            Recipe[] recipes = new[] { coalRecipe, copperBarRecipe, tinBarRecipe, ironBarRecipe1, ironBarRecipe2, silverBarRecipe, blackMetalBarRecipe, flametalBarRecipe };
 
             __instance.m_recipes.AddRange(recipes);
 
