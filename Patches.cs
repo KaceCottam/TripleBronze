@@ -9,12 +9,15 @@ namespace TripleBronze
     [HarmonyPatch]
     public static class Patches
     {
+        public static bool IsObjectDBGood() => ObjectDB.instance != null && ObjectDB.instance.m_items.Count != 0 && ObjectDB.instance.GetItemPrefab("Bronze") != null;
+
         public static BepInEx.Logging.ManualLogSource logger = BepInEx.Logging.Logger.CreateLogSource(TripleBronze.PLUGIN_NAME);
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(ObjectDB), "Awake")]
         public static void ObjectDB_Awake_DebugPatch(ref ObjectDB __instance)
         {
+            if (!IsObjectDBGood()) return;
             if (!TripleBronze.DebugMessagesEnabled) return;
             foreach (var i in __instance.m_items)
             {
@@ -45,18 +48,15 @@ namespace TripleBronze
             }
         }
 
-        private static bool flagBronze = false; // dumb fix
-                [HarmonyPostfix]
+        [HarmonyPostfix]
         [HarmonyPatch(typeof(ObjectDB), "Awake")]
         public static void ObjectDB_Awake_BronzePatch(ref ObjectDB __instance)
         {
-            if (flagBronze) return;
-
+            if (!IsObjectDBGood()) return;
             foreach (var recipe in __instance.m_recipes)
             {
                 if (recipe.m_item?.m_itemData.m_shared.m_name != @"$item_bronze") continue;
                 recipe.m_amount *= (int)TripleBronze.BronzeMultiplier;
-                flagBronze = true;
             }
         }
 
@@ -78,19 +78,13 @@ namespace TripleBronze
             return recipe;
         }
 
-        private static bool flagQuickSmelt = false; // dumb fix
-        private static bool firstMessageDone = false; // dumb fix
         [HarmonyPostfix]
         [HarmonyPatch(typeof(ObjectDB), "Awake")]
         public static void ObjectDB_Awake_QuickSmeltPatch(ref ObjectDB __instance)
         {
-            if (flagQuickSmelt || !TripleBronze.CraftBarsInForgeEnabled) return;
+            if (!TripleBronze.CraftBarsInForgeEnabled) return;
+            if (!IsObjectDBGood()) return;
 
-            if (firstMessageDone == false)
-            {
-                firstMessageDone = true;
-                return;
-            }
 
             List<CraftingStation> craftingStations = __instance.m_recipes
                 .Where(r => r != null)
@@ -182,20 +176,13 @@ namespace TripleBronze
 
             Recipe[] recipes = new[] { coalRecipe, copperBarRecipe, tinBarRecipe, ironBarRecipe1, ironBarRecipe2, silverBarRecipe, blackMetalBarRecipe, flametalBarRecipe };
 
+            var howManyRecipesAlreadyHave = __instance.m_recipes.Count(recipe => recipes.Contains(recipe));
+            if (howManyRecipesAlreadyHave < recipes.Length)
+            {
+                __instance.m_recipes.RemoveAll(recipe => recipes.Contains(recipe));
+            }
             __instance.m_recipes.AddRange(recipes);
 
-            var player = Game.instance.m_playerPrefab.GetComponent<Player>();
-            if (player == null)
-            {
-                logger.LogInfo("Player not yet instantiated, not going to add quicksmelt recipes to player.");
-                return;
-            }
-            foreach (var recipe in recipes)
-            {
-                player.AddKnownRecipe(recipe);
-            }
-
-            flagQuickSmelt = true;
         }
     }
 }
