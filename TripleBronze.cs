@@ -39,6 +39,6 @@ namespace TripleBronze
 
         public const string GUID = "LolmanXDXD.TripleBronze";
 
-        public const string VERSION = "0.3";
+        public const string VERSION = "0.3.1";
     }
 }
