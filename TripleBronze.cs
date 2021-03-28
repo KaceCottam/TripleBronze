@@ -14,7 +14,7 @@ namespace TripleBronze
             var enabled      = base.Config.Bind("TripleBronze", "Enabled", true, "Determines whether or not the mod is enabled.");
             bronzeMultiplier = base.Config.Bind("TripleBronze", "BronzeMultiplier", 3U, "The normal recipe result for bronze is multiplied by this value.");
             debugMessages    = base.Config.Bind("TripleBronze", "DebugEnabled", false, "Enable debug messages in the console.");
-            craftBarsInForge = base.Config.Bind("CraftBarsInForge", "Enabled", true, "Allows bypassing the smeltery by creating crafting recipes for ores/scraps -> bars.");
+            craftBarsInForge = base.Config.Bind("CraftBarsInForge", "Enabled", true, "Allows bypassing the smeltery by creating crafting recipes for ores/scraps -> bars.\nMay cause errors with other mods that modify crafting recipes.");
             coalPerBar       = base.Config.Bind("CraftBarsInForge", "CoalPerBar", 5U, "Can create bars using this many coal. Ores/Scrap are crafted to bars in a 1:1 ratio.");
 
             if (enabled.Value == true)

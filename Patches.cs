@@ -2,6 +2,7 @@
 using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace TripleBronze
 {
@@ -62,16 +63,20 @@ namespace TripleBronze
         private static Recipe MakeRecipe(Tuple<CraftingStation, int> station,
                                          CraftingStation repairStation,
                                          Tuple<ItemDrop, int> resultItem,
-                                         params Tuple<ItemDrop, int>[] ingredients) => new Recipe()
+                                         params Tuple<ItemDrop, int>[] ingredients)
         {
-            m_enabled = true,
-            m_item = resultItem.Item1,
-            m_amount = resultItem.Item2,
-            m_resources = ingredients.Select(t => new Piece.Requirement() { m_resItem = t.Item1, m_amount = t.Item2 }).ToArray(),
-            m_craftingStation = station.Item1,
-            m_repairStation = repairStation,
-            m_minStationLevel = station.Item2
-        };
+            Recipe recipe = ScriptableObject.CreateInstance<Recipe>();
+            recipe.m_enabled = true;
+            recipe.m_item = resultItem.Item1;
+            recipe.m_amount = resultItem.Item2;
+            recipe.m_resources = ingredients.Select(t => new Piece.Requirement() { m_resItem = t.Item1, m_amount = t.Item2 }).ToArray();
+            recipe.m_craftingStation = station.Item1;
+            recipe.m_repairStation = repairStation;
+            recipe.m_minStationLevel = station.Item2;
+            recipe.hideFlags = HideFlags.HideAndDontSave;
+            recipe.name = $"Recipe for {resultItem.Item2} {resultItem.Item1.GetHoverName()}";
+            return recipe;
+        }
 
         private static bool flagQuickSmelt = false; // dumb fix
         private static bool firstMessageDone = false; // dumb fix
