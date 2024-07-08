@@ -1,14 +1,11 @@
-﻿# JotunnModStub
-Upon building for release, this README.md is copied into the `Package` folder for thunderstore packaging. Remember to also edit the manifest.json and supply your own mod icon.
+﻿# TripleBronze
+Triples the amount of bronze you get with each craft so that crafting bronze is consistent (1 tin ingot + 2 copper ingots = 3 bronze ingots)
 
 ## Installation (manual)
-
+Unzip to `BepinEx/plugins/` folder.
 
 ## Features
-
-
-## Changelog
-
+* Configurable Result Amounts for Bronze Ingot Recipe
 
 ## Known issues
-You can find the github at:
+You can find the github at: https://github.com/KaceCottam/TripleBronze/

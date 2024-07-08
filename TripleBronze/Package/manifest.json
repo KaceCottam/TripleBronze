@@ -1,8 +1,8 @@
 ﻿{
-  "name": "JotunnModStub",
-  "description": "",
-  "version_number": "0.0.1",
-  "website_url": "",
+  "name": "TripleBronze",
+  "description": "Triples the amount of bronze you get with each craft so that crafting bronze is consistent.",
+  "version_number": "1.0.0",
+  "website_url": "https://github.com/KaceCottam/TripleBronze/",
   "dependencies": [
     "denikson-BepInExPack_Valheim-5.4.2202",
     "ValheimModding-Jotunn-2.19.4"
