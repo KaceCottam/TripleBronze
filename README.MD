@@ -1,7 +1,8 @@
-# JötunnModStub
+# TripleBronze
 
 A Valheim mod stub project using [Jötunn](https://github.com/Valheim-Modding/Jotunn) including build tools and a basic Unity project stub.
-There is no actual plugin content included, just a minimum plugin class. 
+
+See <./TripleBronze/README.md> for actual details!
 
 #  Setup Guide
 
