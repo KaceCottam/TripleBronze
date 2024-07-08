@@ -5,9 +5,9 @@ Requires BepinEx.
 
 There is a configuration file to change the multiplier of bronze. After the first run, this file will be automatically created at "BepinEx/config/LolmanXDXD.TripleBronze.cfg"
 
-In the configuration file, you can also enable the "QuickSmelt" patch which add QOL recipes from ores -> bars into the forge after upgrading the tier. This has configurable coal amounts. This might need you to drop/pickup coal ore, tin ore, wood, and iron ore.
-
 Hosted at <https://www.nexusmods.com/valheim/mods/94>
 
-## Changelog 0.3
-Added black metal, flametal and silver recipes to quality of life addon.
+Set up with [Jotunn Mod Stub](https://github.com/Valheim-Modding/JotunnModStub)!
+
+## Changelog 1.0
+Remade the mod using Jotunn Mod Stub so it works with newer versions of Valheim (and less bugs!)
